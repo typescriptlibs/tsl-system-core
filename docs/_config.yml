@@ -1,0 +1,24 @@
+title: System Core TypeScript Library
+description: The core types of the system framework
+author: © TypeScriptLibs
+email: bug@typescriptlibs.org
+github_username:  typescriptlibs
+rss: rss
+
+show_excerpts: false
+
+github:
+    private: true
+
+header_pages:
+ - index.md
+ - libraries.md
+
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
+
+theme: minima
+
+minima:
+  date_format: "%Y-%m-%d"
