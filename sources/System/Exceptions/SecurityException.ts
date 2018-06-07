@@ -10,9 +10,8 @@
 
 \*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*/
 
-import packageMetaData from '../../metaData';
+import packageMetaData from '../../package';
 import Object from '../Object';
-import String from '../Primitives/String';
 import SystemException from '../Exceptions/SystemException';
 import Type from '../Type';
 
@@ -28,12 +27,12 @@ export class SecurityException extends SystemException
 	//
 	//////
 
-	public constructor( message?: ( string | String ), permissionType?: typeof Object, permissionState?: ( string | String ) )
+	public constructor(message?: string, permissionType?: typeof Object, permissionState?: string )
 	{
 		super( message );
 
 		this.permissionType = ( permissionType || null );
-		this.permissionState = new String( permissionState );
+		this.permissionState = permissionState;
 	}
 
 	//////
@@ -42,15 +41,15 @@ export class SecurityException extends SystemException
 	//
 	//////
 
-	private _permissionState: String;
+	private _permissionState: string;
 	private _permissionType: ( typeof Object | null );
 
-	public get permissionState(): String
+	public get permissionState(): string
 	{
 		return this._permissionState;
 	}
 
-	public set permissionState( value: String )
+	public set permissionState( value: string )
 	{
 		this._permissionState = value;
 	}

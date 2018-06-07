@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import System_test from './System.test';
+import System_test from './System.test/';
 
 try
 {

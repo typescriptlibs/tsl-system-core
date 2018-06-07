@@ -10,7 +10,7 @@
 
 \*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*/
 
-import packageMetaData from '../../metaData';
+import packageMetaData from '../../package';
 import Boolean from '../Primitives/Boolean';
 import IEnumerator from './IEnumerator';
 import Object from '../Object';
@@ -109,21 +109,20 @@ export class Enumerator<T extends Object> extends Object implements IEnumerator<
 	/**
 	 * Moves to the next position in the array.
 	 *
-	 * @return {Boolean}
-	 * Returns Boolean.TRUE, if next position was found, otherwise
-	 * Boolean.FALSE.
+	 * @return {boolean}
+	 * Returns true, if next position was found, otherwise false.
 	 */
-	public moveNext(): Boolean
+	public moveNext(): boolean
 	{
 		if ( ++this._position < this._valuesLength )
 		{
 			this._current = this._values[this._position];
-			return Boolean.TRUE;
+			return true;
 		}
 		else
 		{
 			this._current = undefined;
-			return Boolean.FALSE;
+			return false;
 		}
 	}
 

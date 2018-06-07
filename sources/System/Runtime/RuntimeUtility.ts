@@ -49,7 +49,7 @@ export module RuntimeUtility
 	//////
 
 	/**
-	 * Generates unique codes for strings. This code is only unique for the
+	 * Generates unique codes for strings. This code is only unique during the
 	 * current runtime session.
 	 *
 	 * @param {string} str
@@ -82,7 +82,7 @@ export module RuntimeUtility
 	}
 
 	/**
-	 * Generates unique codes for objects. This code is only unique for the
+	 * Generates unique codes for objects. This code is only unique during the
 	 * current runtime session.
 	 *
 	 * @returns {number}

@@ -11,7 +11,8 @@
 \*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*/
 
 /**
- * Provides an interface for the runtime function using to dispose unmanaged data.
+ * Provides an interface for the runtime function using to dispose unmanaged
+ * data.
  */
 export interface IDisposable
 {
@@ -24,7 +25,7 @@ export interface IDisposable
 	/**
 	 * The class specific clean up function to dispose unmanaged data.
 	 */
-	dispose(): void;
+	dispose (): void;
 }
 
 export default IDisposable;

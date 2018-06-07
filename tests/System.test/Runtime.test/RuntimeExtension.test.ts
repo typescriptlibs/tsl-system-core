@@ -1,20 +1,52 @@
 import * as assert from 'assert';
 import
 {
-	root,
+	lock,
 	using,
 	IDisposable,
+	Object
 }
-	from 'tsl-system-core';
+	from '../../../sources';
 
 export default function (): boolean
 {
+	let testCounter = 0;
 	try
 	{
-		// root
-		assert.deepStrictEqual( root, global,
-			'RuntimeExtension.root <===> global'
-		);
+		// lock
+		var testLock = new Object(),
+			assertSync = assert.async();
+		lock( testLock, {
+			locked: ( innerTestLock ) =>
+			{
+				var lockState = 1;
+				++testCounter; // 1
+				assert.strictEqual( this.getHashCode(), testLock.getHashCode() )
+				++testCounter; // 2
+				assert.strictEqual( innerTestLock.getHashCode(), testLock.getHashCode() )
+				++testCounter; // 3
+				lock( testLock, {
+					locked: ( innerstTestLock ) =>
+					{
+						lockState = 2;
+						throw new Error( 'Lock Exception Test' );
+					},
+					catch: ( error ) =>
+					{
+						assert.ok( !!error );
+						assert.strictEqual( error.message, 'Lock Exception Test' );
+						assert.strictEqual( lockState, 2 );
+						assertSync();
+					}
+				} )
+				++testCounter; // 4
+				assert.strictEqual( lockState, 1 );
+			},
+			catch: ( error ) =>
+			{
+				assert.ok( false )
+			}
+		} );
 
 		// using
 		class UsingTest implements IDisposable
@@ -26,26 +58,23 @@ export default function (): boolean
 			}
 		}
 		let usingTest = new UsingTest();
-		assert.strictEqual( usingTest.disposeCalled, false,
-			'usingTest.disposeCalled === false : ' + ( usingTest.disposeCalled + ' === false' )
-		);
+		++testCounter; // 5
+		assert.strictEqual( usingTest.disposeCalled, false );
 		using( usingTest,
 			usingTest =>
 			{
-				assert.strictEqual( usingTest.disposeCalled, false,
-					'usingTest.disposeCalled === false : ' + ( usingTest.disposeCalled + ' === false' )
-				);
+				++testCounter; // 6
+				assert.strictEqual( usingTest.disposeCalled, false );
 			}
 		);
-		assert.strictEqual( usingTest.disposeCalled, true,
-			'usingTest.disposeCalled === true : ' + ( usingTest.disposeCalled + ' === true' )
-		);
+		++testCounter; // 7
+		assert.strictEqual( usingTest.disposeCalled, true );
 
 		return true;
 	}
 	catch ( error )
 	{
-		console.error( 'RuntimeExtension.test failed (' + error + ')\n' + error.stack );
+		console.error( 'RuntimeExtension.test #' + testCounter + ' failed (' + error + ')' );
 		return false;
 	}
 }

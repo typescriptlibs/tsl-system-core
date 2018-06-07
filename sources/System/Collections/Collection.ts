@@ -10,7 +10,7 @@
 
 \*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*i*/
 
-import packageMetaData from '../../metaData';
+import packageMetaData from '../../package';
 import ArgumentNullException from '../Exceptions/ArgumentNullException';
 import ArgumentOutOfRangeException from '../Exceptions/ArgumentOutOfRangeException';
 import Boolean from '../Primitives/Boolean';
@@ -73,17 +73,17 @@ export class Collection<T extends Object>
 	/**
 	 * The number of items in this collection.
 	 */
-	public get count(): Int32
+	public get count(): number
 	{
-		return new Int32( this._items.length );
+		return this._items.length;
 	}
 
 	/**
 	 * Indicates whether this collection is read-only.
 	 */
-	public get isReadOnly(): Boolean
+	public get isReadOnly(): boolean
 	{
-		return Boolean.FALSE;
+		return false;
 	}
 
 	//////
@@ -103,7 +103,7 @@ export class Collection<T extends Object>
 	 */
 	public add( item: T )
 	{
-		if ( this.isReadOnly.equals( Boolean.TRUE ) )
+		if ( this.isReadOnly === true )
 		{
 			throw new NotSupportedException( 'The collection is read-only.' );
 		}
@@ -119,7 +119,7 @@ export class Collection<T extends Object>
 	 */
 	public clear()
 	{
-		if ( this.isReadOnly.equals( Boolean.TRUE ) )
+		if ( this.isReadOnly === true )
 		{
 			throw new NotSupportedException( 'The collection is read-only.' );
 		}
@@ -133,15 +133,13 @@ export class Collection<T extends Object>
 	 * @param {T} item
 	 * The item to locate in the Collection.
 	 *
-	 * @return {Boolean}
-	 * Returns Boolean.TRUE if the item has been found in the Collection,
-	 * otherwise returns Boolean.FALSE.
+	 * @return {boolean}
+	 * Returns true if the item has been found in the Collection, otherwise
+	 * returns false.
 	 */
-	public contains( value: T ): Boolean
+	public contains( value: T ): boolean
 	{
-		let found = this._items.some( item => { return item.equals( value ); } );
-
-		return ( found ? Boolean.TRUE : Boolean.FALSE );
+		return this._items.some( item => { return item.equals( value ); } );
 	}
 
 	/**
@@ -151,7 +149,7 @@ export class Collection<T extends Object>
 	 * @param {T[]} array
 	 * The Array as destination of the items, that are copied from ICollection.
 	 *
-	 * @param {Int32} arrayIndex
+	 * @param {number} arrayIndex
 	 * The zero-based index of the Array, at which to start with inserting the
 	 * copied items.
 	 *
@@ -165,20 +163,21 @@ export class Collection<T extends Object>
 	 * The number of items in the Collection ist larger than the available
 	 * space in the array.
 	 */
-	public copyTo( array: T[], arrayIndex: Int32 ): void
+	public copyTo( array: T[], arrayIndex: number ): void
 	{
 		if ( array === null )
 		{
 			throw new ArgumentNullException( 'The array is null.' );
 		}
 
-		if ( arrayIndex.valueOf() < 0 )
+		if ( arrayIndex < 0 )
 		{
-			throw new ArgumentOutOfRangeException( 'The array index is less than zero.' );
+			throw new ArgumentOutOfRangeException(
+				'The array index is less than zero.'
+			);
 		}
-		let startIndex = arrayIndex.valueOf();
 
-		this._items.forEach( ( item, index ) => array[startIndex + index] = item );
+		this._items.forEach( ( item, index ) => array[arrayIndex + index] = item );
 	}
 
 	/**
@@ -189,15 +188,21 @@ export class Collection<T extends Object>
 	 *
 	 * @param {any} thisArg
 	 * Sets the this key word in each function call.
+	 *
+	 * @param {}
 	 */
-	public forEach( delegate: ( value: T, valueCollection: Collection<T> ) => any, thisArg?: any )
+	public forEach<TReturn>( delegate: ( value: T, valueCollection: Collection<T> ) => ( TReturn | void ), thisArg?: any ): ( TReturn | undefined )
 	{
 		let enumerator = this.getEnumerator();
+		let result = undefined;
 
-		while ( enumerator.moveNext().equals( Boolean.TRUE ) )
+		while ( enumerator.moveNext() === true
+			&& result !== undefined )
 		{
-			delegate.call( thisArg, enumerator.current, this );
+			result = delegate.call( thisArg, enumerator.current, this );
 		}
+
+		return ( result || undefined );
 	}
 
 	/**
@@ -228,16 +233,16 @@ export class Collection<T extends Object>
 	 * @param {T} item
 	 * The item to remove from the Collection.
 	 *
-	 * @return {Boolean}
-	 * Returns Boolean.TRUE if the item was found and successfully removed from
-	 * the Collection, otherwise Boolean.FALSE.
+	 * @return {boolean}
+	 * Returns true if the item was found and successfully removed from the
+	 * Collection, otherwise false.
 	 *
 	 * @exception {NotSupportedException}
 	 * The Collection is read-only.
 	 */
-	public remove( value: T ): Boolean
+	public remove( value: T ): boolean
 	{
-		if ( this.isReadOnly.equals( Boolean.TRUE ) )
+		if ( this.isReadOnly === true )
 		{
 			throw new NotSupportedException( 'The collection is read-only.' );
 		}
@@ -260,13 +265,13 @@ export class Collection<T extends Object>
 
 		if ( deleteIndex < 0 )
 		{
-			return Boolean.FALSE;
+			return false;
 		}
 		else
 		{
 			this._items.splice( deleteIndex, 1 );
 
-			return Boolean.TRUE;
+			return true;
 		}
 	}
 }
