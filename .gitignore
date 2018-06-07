@@ -1,3 +1,8 @@
+/node_modules
+/npm-debug.log
+/release
+*.DS_Store
+
 # Logs
 logs
 *.log

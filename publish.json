@@ -1,0 +1,27 @@
+{
+	"version": "0.0.4",
+	"name": "tsl-system-core",
+	"license": "MIT",
+	"description": "System Core TypeScript Library",
+	"author": "TypeScriptLibs and Contributors",
+	"main": "index.js",
+	"types": "index.d.ts",
+	"bugs": {
+		"email": "bugs@typescriptlibs.org"
+	},
+	"keywords": [
+		"TypeScript",
+		"framework",
+		"system",
+		"library",
+		"tsc",
+		"tsl",
+		".NET",
+		"dotNET"
+	],
+	"homepage": "https://typescriptlibs.org/",
+	"repository": {
+		"type": "git",
+		"url": "https://typescriptlibs.org/git/tsl-system-core.git"
+	}
+}
